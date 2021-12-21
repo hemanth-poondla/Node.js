@@ -3,6 +3,8 @@ const filePath = require('path');
 
 const port = 8000;
 
+const db = require('./config/mongoose');
+const Contact = require('./models/contact');
 const app = express();
 
 
@@ -51,6 +53,18 @@ app.get('/profile', function(req, res){
     return res.render('practice', {
         title: "My Profile page"
     });
+});
+
+app.get('/delete-contact/',function(req,res){
+    let phone = req.query.phone;
+
+    let contactIndex = contactList.findIndex(contact => contact.phone == phone);
+
+    if(contactIndex != -1){
+        contactList.splice(contactIndex, 1);
+    }
+
+    return res.redirect('back');
 });
 
 app.post('/create-contact', function(req,res){
